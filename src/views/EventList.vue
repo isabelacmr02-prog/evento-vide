@@ -263,7 +263,7 @@ function formatarDatas(ini, fim) {
 .user-avatar {
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: linear-gradient(135deg, #2563eb, #0891b2);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -334,7 +334,7 @@ function formatarDatas(ini, fim) {
 }
 .card-accent-bar {
   height: 4px;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(90deg, #2563eb 0%, #0891b2 100%);
 }
 .evento-card-header {
   padding: 1rem 1.1rem .7rem;

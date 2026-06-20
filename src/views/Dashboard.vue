@@ -364,21 +364,28 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
 
 /* Banner */
 .evento-banner {
-  background: linear-gradient(135deg, #312e81 0%, #4c1d95 45%, #6d28d9 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
   color: #fff;
   position: relative;
   overflow: hidden;
-  padding: 2.25rem 0 3.5rem;
-  animation: fadeIn .4s ease;
+  padding: 2rem 0 3.5rem;
+  animation: fadeIn .35s ease;
 }
 .banner-bg-orb {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255,255,255,.05);
   pointer-events: none;
 }
-.banner-orb-1 { width: 560px; height: 560px; top: -220px; right: -130px; }
-.banner-orb-2 { width: 320px; height: 320px; bottom: -140px; left: 80px; }
+.banner-orb-1 {
+  width: 600px; height: 600px;
+  top: -260px; right: -120px;
+  background: radial-gradient(circle, rgba(99,102,241,.25) 0%, transparent 70%);
+}
+.banner-orb-2 {
+  width: 340px; height: 340px;
+  bottom: -120px; left: 60px;
+  background: radial-gradient(circle, rgba(56,189,248,.15) 0%, transparent 70%);
+}
 .banner-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -390,27 +397,28 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
   display: inline-flex;
   align-items: center;
   gap: .35rem;
-  font-size: .7rem;
+  font-size: .68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .1em;
-  color: rgba(255,255,255,.55);
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
+  color: #93c5fd;
+  background: rgba(147,197,253,.1);
+  border: 1px solid rgba(147,197,253,.2);
   border-radius: 99px;
-  padding: .2rem .65rem;
-  margin-bottom: .85rem;
+  padding: .2rem .7rem;
+  margin-bottom: .9rem;
 }
 .banner-title {
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: 800;
   color: #fff;
   letter-spacing: -.03em;
   margin-bottom: .45rem;
   line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(0,0,0,.2);
 }
-.banner-meta { font-size: .88rem; color: rgba(255,255,255,.65); margin-bottom: .35rem; }
-.banner-objetivo { font-size: .9rem; color: rgba(255,255,255,.8); max-width: 560px; margin-top: .1rem; }
+.banner-meta { font-size: .88rem; color: rgba(255,255,255,.6); margin-bottom: .3rem; }
+.banner-objetivo { font-size: .9rem; color: rgba(255,255,255,.82); max-width: 560px; margin-top: .15rem; }
 
 /* Progress */
 .banner-progress {
@@ -424,12 +432,15 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
   display: flex;
   justify-content: space-between;
   font-size: .78rem;
-  color: rgba(255,255,255,.6);
+  color: rgba(255,255,255,.55);
   margin-bottom: .5rem;
 }
-.progress-pct { font-weight: 700; color: #fff; }
-.progress { background: rgba(255,255,255,.15); height: 8px; }
-.progress-bar { transition: width .8s cubic-bezier(.4,0,.2,1); }
+.progress-pct { font-weight: 700; color: #93c5fd; }
+.progress { background: rgba(255,255,255,.12); height: 8px; }
+.progress-bar {
+  background: linear-gradient(90deg, #60a5fa, #38bdf8);
+  transition: width .8s cubic-bezier(.4,0,.2,1);
+}
 
 /* Stats Row — floating white cards below banner */
 .stats-row {
@@ -466,7 +477,7 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
   border-radius: 14px 14px 0 0;
 }
 .stat-green::after { background: linear-gradient(90deg, #16a34a, #22c55e); }

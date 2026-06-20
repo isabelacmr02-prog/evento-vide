@@ -2,22 +2,21 @@
   <div class="input-group">
     <span class="input-prefix">R$</span>
     <input
+      ref="inputRef"
       type="text"
-      inputmode="decimal"
+      inputmode="numeric"
       :value="displayValue"
       :placeholder="placeholder || '0,00'"
       :disabled="disabled"
       class="form-control currency-field"
       v-bind="$attrs"
-      @focus="onFocus"
-      @blur="onBlur"
       @input="onInput"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 
 defineOptions({ inheritAttrs: false })
 
@@ -28,42 +27,38 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 
-const focused = ref(false)
-const rawText = ref('')
+const inputRef = ref(null)
+const internalDigits = ref('')
 
 const displayValue = computed(() => {
-  if (focused.value) return rawText.value
-  if (props.modelValue == null || props.modelValue === '') return ''
-  return Number(props.modelValue).toLocaleString('pt-BR', {
+  if (!internalDigits.value) return ''
+  const num = parseInt(internalDigits.value, 10)
+  return isNaN(num) ? '' : (num / 100).toLocaleString('pt-BR', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })
 })
 
-function onFocus() {
-  focused.value = true
-  rawText.value = props.modelValue != null ? String(props.modelValue).replace('.', ',') : ''
-}
-
 function onInput(e) {
-  rawText.value = e.target.value
-}
+  const digits = e.target.value.replace(/\D/g, '')
+  internalDigits.value = digits
 
-function onBlur() {
-  focused.value = false
-  let val = rawText.value.trim()
-  if (!val) { emit('update:modelValue', null); return }
-  // Handle both "1.234,56" (pt-BR) and "1234.56" (en)
-  if (val.includes(',')) {
-    val = val.replace(/\./g, '').replace(',', '.')
-  }
-  const num = parseFloat(val)
-  emit('update:modelValue', isNaN(num) ? null : Math.round(num * 100) / 100)
-  rawText.value = ''
+  const numVal = digits ? parseInt(digits, 10) / 100 : null
+  emit('update:modelValue', numVal)
+
+  // Force format on DOM and push cursor to end
+  nextTick(() => {
+    if (!inputRef.value) return
+    const formatted = displayValue.value
+    inputRef.value.value = formatted
+    inputRef.value.setSelectionRange(formatted.length, formatted.length)
+  })
 }
 
 watch(() => props.modelValue, (val) => {
-  if (!focused.value) rawText.value = val != null ? String(val) : ''
+  if (val == null) { internalDigits.value = ''; return }
+  // Convert modelValue back to cents-string to keep internal state consistent
+  internalDigits.value = String(Math.round(val * 100))
 }, { immediate: true })
 </script>
 
