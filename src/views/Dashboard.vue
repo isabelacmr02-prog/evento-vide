@@ -22,34 +22,13 @@
       <div class="banner-bg-orb banner-orb-1"></div>
       <div class="banner-bg-orb banner-orb-2"></div>
       <div class="banner-inner">
-        <div class="banner-info">
-          <div class="banner-tag">⛺ Evento</div>
-          <h1 class="banner-title">{{ store.evento?.nome }}</h1>
-          <p class="banner-meta">
-            📅 {{ formatarDatas(store.evento?.data_inicio, store.evento?.data_fim) }}
-            · {{ store.dias }} dia{{ store.dias !== 1 ? 's' : '' }}
-          </p>
-          <p v-if="store.evento?.objetivo" class="banner-objetivo">{{ store.evento.objetivo }}</p>
-        </div>
-
-        <div class="banner-stats">
-          <div class="stat-card">
-            <span class="stat-num">{{ store.totalPessoas }}</span>
-            <span class="stat-label">pessoas</span>
-          </div>
-          <div class="stat-card" :class="store.resumoFinanceiro.saldo >= 0 ? 'stat-green' : 'stat-red'">
-            <span class="stat-num">R$ {{ formatNum(store.resumoFinanceiro.saldo) }}</span>
-            <span class="stat-label">saldo</span>
-          </div>
-          <div class="stat-card" :class="store.completude.pct >= 80 ? 'stat-green' : store.completude.pct >= 50 ? 'stat-yellow' : 'stat-red'">
-            <span class="stat-num">{{ store.completude.pct }}%</span>
-            <span class="stat-label">planejado</span>
-          </div>
-          <div class="stat-card" :class="store.alertas.length === 0 ? 'stat-green' : errosCount > 0 ? 'stat-red' : 'stat-yellow'">
-            <span class="stat-num">{{ store.alertas.length }}</span>
-            <span class="stat-label">alertas</span>
-          </div>
-        </div>
+        <div class="banner-tag">⛺ Evento</div>
+        <h1 class="banner-title">{{ store.evento?.nome }}</h1>
+        <p class="banner-meta">
+          📅 {{ formatarDatas(store.evento?.data_inicio, store.evento?.data_fim) }}
+          · {{ store.dias }} dia{{ store.dias !== 1 ? 's' : '' }}
+        </p>
+        <p v-if="store.evento?.objetivo" class="banner-objetivo">{{ store.evento.objetivo }}</p>
       </div>
 
       <!-- Barra de progresso -->
@@ -59,6 +38,30 @@
           <span class="progress-pct">{{ store.completude.pct }}%</span>
         </div>
         <div class="progress"><div class="progress-bar" :style="`width:${store.completude.pct}%`"></div></div>
+      </div>
+    </div>
+
+    <!-- STATS ROW — white cards floating below banner -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <span class="stat-num">{{ store.totalPessoas }}</span>
+        <span class="stat-label">Pessoas</span>
+      </div>
+      <div class="stat-card" :class="saldoClass">
+        <span class="stat-icon">💰</span>
+        <span class="stat-num stat-num-fin">R$ {{ formatNum(store.resumoFinanceiro.saldo) }}</span>
+        <span class="stat-label">Saldo</span>
+      </div>
+      <div class="stat-card" :class="completudeClass">
+        <span class="stat-icon">📋</span>
+        <span class="stat-num">{{ store.completude.pct }}%</span>
+        <span class="stat-label">Planejamento</span>
+      </div>
+      <div class="stat-card" :class="alertasClass">
+        <span class="stat-icon">⚠️</span>
+        <span class="stat-num">{{ store.alertas.length }}</span>
+        <span class="stat-label">Alertas</span>
       </div>
     </div>
 
@@ -78,7 +81,7 @@
       </div>
 
       <!-- GRADE DE SEÇÕES -->
-      <div class="dashboard-grid">
+      <div class="dashboard-grid stagger">
         <SectionCard title="Informações Gerais" icon="📋" @edit="abrirSecao('geral')">
           <InfoRow label="Nome" :value="store.evento?.nome" />
           <InfoRow label="Datas" :value="formatarDatas(store.evento?.data_inicio, store.evento?.data_fim)" />
@@ -300,6 +303,9 @@ const secaoAberta = ref(null)
 const customSecaoNome = ref('')
 
 const errosCount = computed(() => store.alertas.filter(a => a.nivel === 'erro').length)
+const saldoClass = computed(() => store.resumoFinanceiro.saldo >= 0 ? 'stat-green' : 'stat-red')
+const completudeClass = computed(() => store.completude.pct >= 80 ? 'stat-green' : store.completude.pct >= 50 ? 'stat-yellow' : 'stat-red')
+const alertasClass = computed(() => store.alertas.length === 0 ? 'stat-green' : errosCount.value > 0 ? 'stat-red' : 'stat-yellow')
 
 const secoesCustomExtras = computed(() => {
   const secoesPadrao = ['geral','local','hospedagem','pessoas','alimentacao','programacao','transporte','equipes','materiais','orcamento','riscos','tarefas']
@@ -358,29 +364,25 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
 
 /* Banner */
 .evento-banner {
-  background: linear-gradient(145deg, #4338ca 0%, #5b21b6 50%, #7c3aed 100%);
+  background: linear-gradient(135deg, #312e81 0%, #4c1d95 45%, #6d28d9 100%);
   color: #fff;
   position: relative;
   overflow: hidden;
-  padding: 2rem 0 0;
+  padding: 2.25rem 0 3.5rem;
+  animation: fadeIn .4s ease;
 }
 .banner-bg-orb {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.05);
   pointer-events: none;
 }
-.banner-orb-1 { width: 500px; height: 500px; top: -200px; right: -100px; }
-.banner-orb-2 { width: 300px; height: 300px; bottom: -100px; left: 100px; }
+.banner-orb-1 { width: 560px; height: 560px; top: -220px; right: -130px; }
+.banner-orb-2 { width: 320px; height: 320px; bottom: -140px; left: 80px; }
 .banner-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem 1.5rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  padding: 0 1.5rem 1.25rem;
   position: relative;
   z-index: 1;
 }
@@ -388,47 +390,33 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
   display: inline-flex;
   align-items: center;
   gap: .35rem;
-  font-size: .72rem;
+  font-size: .7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .07em;
-  color: rgba(255,255,255,.7);
-  margin-bottom: .5rem;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.55);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 99px;
+  padding: .2rem .65rem;
+  margin-bottom: .85rem;
 }
 .banner-title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #fff;
-  letter-spacing: -.025em;
-  margin-bottom: .4rem;
+  letter-spacing: -.03em;
+  margin-bottom: .45rem;
+  line-height: 1.15;
 }
-.banner-meta { font-size: .88rem; color: rgba(255,255,255,.72); margin-bottom: .4rem; }
-.banner-objetivo { font-size: .9rem; color: rgba(255,255,255,.85); max-width: 480px; }
-
-/* Stats */
-.banner-stats { display: flex; gap: .75rem; flex-wrap: wrap; align-self: flex-start; padding-top: .25rem; }
-.stat-card {
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.2);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: .75rem 1.1rem;
-  text-align: center;
-  min-width: 90px;
-  transition: background .2s;
-}
-.stat-card:hover { background: rgba(255,255,255,.18); }
-.stat-green { background: rgba(22,163,74,.2); border-color: rgba(22,163,74,.35); }
-.stat-yellow { background: rgba(217,119,6,.2); border-color: rgba(217,119,6,.35); }
-.stat-red { background: rgba(220,38,38,.2); border-color: rgba(220,38,38,.35); }
-.stat-num { display: block; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -.02em; }
-.stat-label { display: block; font-size: .68rem; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: .05em; margin-top: .15rem; }
+.banner-meta { font-size: .88rem; color: rgba(255,255,255,.65); margin-bottom: .35rem; }
+.banner-objetivo { font-size: .9rem; color: rgba(255,255,255,.8); max-width: 560px; margin-top: .1rem; }
 
 /* Progress */
 .banner-progress {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem 1.25rem;
+  padding: 0 1.5rem 0;
   position: relative;
   z-index: 1;
 }
@@ -436,14 +424,81 @@ function labelStatusTarefa(s) { return { pendente: 'Pendente', em_andamento: 'Em
   display: flex;
   justify-content: space-between;
   font-size: .78rem;
-  color: rgba(255,255,255,.65);
-  margin-bottom: .45rem;
+  color: rgba(255,255,255,.6);
+  margin-bottom: .5rem;
 }
-.progress-pct { font-weight: 700; color: rgba(255,255,255,.9); }
-.progress { background: rgba(255,255,255,.2); }
+.progress-pct { font-weight: 700; color: #fff; }
+.progress { background: rgba(255,255,255,.15); height: 8px; }
+.progress-bar { transition: width .8s cubic-bezier(.4,0,.2,1); }
+
+/* Stats Row — floating white cards below banner */
+.stats-row {
+  max-width: 1200px;
+  margin: -2rem auto 0;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  position: relative;
+  z-index: 10;
+  animation: fadeInUp .45s .12s ease both;
+}
+@media (max-width: 768px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+
+.stat-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(79,70,229,.10), 0 2px 8px rgba(0,0,0,.05);
+  padding: 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform .22s cubic-bezier(.4,0,.2,1), box-shadow .22s;
+  cursor: default;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 14px 14px 0 0;
+}
+.stat-green::after { background: linear-gradient(90deg, #16a34a, #22c55e); }
+.stat-yellow::after { background: linear-gradient(90deg, #d97706, #f59e0b); }
+.stat-red::after { background: linear-gradient(90deg, #dc2626, #ef4444); }
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(79,70,229,.15), 0 4px 12px rgba(0,0,0,.07); }
+
+.stat-icon { font-size: 1.45rem; margin-bottom: .4rem; display: block; line-height: 1; }
+.stat-num {
+  display: block;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.03em;
+  line-height: 1.1;
+}
+.stat-num-fin { font-size: 1.1rem; }
+.stat-green .stat-num { color: #16a34a; }
+.stat-yellow .stat-num { color: #d97706; }
+.stat-red .stat-num { color: #dc2626; }
+.stat-label {
+  display: block;
+  font-size: .67rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-muted);
+  margin-top: .3rem;
+  font-weight: 600;
+}
 
 /* Main */
-.main-content { max-width: 1200px; margin: 0 auto; padding: 1.75rem 1.5rem; }
+.main-content { max-width: 1200px; margin: 1.75rem auto 0; padding: 0 1.5rem 2.5rem; }
 
 /* Alertas */
 .alertas-section {

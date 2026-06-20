@@ -29,10 +29,23 @@
         </button>
       </div>
 
-      <!-- Loading -->
-      <div v-if="loading" class="loading-state">
-        <div class="loading-spinner"></div>
-        <span>Carregando eventos...</span>
+      <!-- Skeleton Loading -->
+      <div v-if="loading" class="eventos-grid">
+        <div v-for="i in 3" :key="i" class="skeleton-card">
+          <div class="skeleton skeleton-bar-top"></div>
+          <div style="padding: 1rem 1.1rem">
+            <div class="skeleton skeleton-h2 mb-2"></div>
+            <div class="skeleton skeleton-text mb-1"></div>
+            <div class="skeleton skeleton-text-sm mt-3 mb-3"></div>
+            <div style="display:flex;gap:.5rem">
+              <div class="skeleton" style="height:24px;width:110px;border-radius:99px"></div>
+              <div class="skeleton" style="height:24px;width:80px;border-radius:99px"></div>
+            </div>
+          </div>
+          <div style="padding: .85rem 1.1rem; border-top: 1px solid var(--border-light)">
+            <div class="skeleton" style="height:34px;width:100%;border-radius:8px"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Empty State -->
@@ -44,7 +57,7 @@
       </div>
 
       <!-- Grid de Eventos -->
-      <div v-else class="eventos-grid">
+      <div v-else class="eventos-grid stagger">
         <div v-for="ev in store.lista" :key="ev.id" class="evento-card">
           <div class="card-accent-bar"></div>
           <div class="evento-card-header">
@@ -276,24 +289,12 @@ function formatarDatas(ini, fim) {
 .page-title { font-size: 1.6rem; font-weight: 800; color: var(--text); letter-spacing: -.025em; }
 .page-subtitle { color: var(--text-muted); font-size: .9rem; margin-top: .2rem; }
 
-/* Loading */
-.loading-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .75rem;
-  padding: 4rem;
-  color: var(--text-muted);
+.skeleton-bar-top {
+  height: 4px;
+  width: 100%;
+  border-radius: 0;
+  margin-bottom: 0;
 }
-.loading-spinner {
-  width: 22px;
-  height: 22px;
-  border: 2.5px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 /* Empty State */
 .empty-card {

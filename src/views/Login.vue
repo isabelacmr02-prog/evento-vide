@@ -35,7 +35,12 @@
           </div>
           <div class="form-group">
             <label class="form-label">Senha</label>
-            <input v-model="senha" type="password" class="form-control" placeholder="••••••••" required />
+            <div style="position:relative">
+              <input v-model="senha" :type="mostrarSenha ? 'text' : 'password'" class="form-control" placeholder="••••••••" required style="padding-right:2.75rem" />
+              <button type="button" class="senha-toggle" @click="mostrarSenha = !mostrarSenha" :title="mostrarSenha ? 'Ocultar' : 'Mostrar'">
+                {{ mostrarSenha ? '🙈' : '👁' }}
+              </button>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary btn-lg w-full" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
@@ -66,6 +71,7 @@ const senha = ref('')
 const loading = ref(false)
 const erro = ref('')
 const modo = ref('login')
+const mostrarSenha = ref(false)
 
 function toggleModo() {
   modo.value = modo.value === 'login' ? 'signup' : 'login'
@@ -239,4 +245,23 @@ async function handleSubmit() {
   display: inline-block;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+.login-form-wrap { animation: fadeInUp .4s .1s ease both; }
+
+.senha-toggle {
+  position: absolute;
+  right: .6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: .25rem;
+  line-height: 1;
+  z-index: 2;
+  opacity: .6;
+  transition: opacity .15s;
+}
+.senha-toggle:hover { opacity: 1; }
 </style>

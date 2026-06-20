@@ -47,8 +47,8 @@
               <input v-model="form.descricao" class="form-control" placeholder="Ex.: Aluguel do rancho" />
             </div>
             <div class="form-group">
-              <label class="form-label">Valor (R$) *</label>
-              <input v-model.number="form.valor" type="number" step="0.01" class="form-control" />
+              <label class="form-label">Valor *</label>
+              <CurrencyInput v-model="form.valor" placeholder="0,00" />
             </div>
             <div class="form-group">
               <label class="form-label">Status</label>
@@ -116,6 +116,7 @@
 import { ref, computed } from 'vue'
 import { useEventoDataStore } from '@/stores/eventoData'
 import { supabase } from '@/services/supabase'
+import CurrencyInput from '@/components/common/CurrencyInput.vue'
 
 const emit = defineEmits(['close'])
 const store = useEventoDataStore()

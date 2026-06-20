@@ -294,3 +294,93 @@ textarea.form-control { resize: vertical; min-height: 80px; }
   .modal-overlay { position: static; background: none; }
   .modal { box-shadow: none; max-height: none; }
 }
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+@keyframes spin-smooth {
+  to { transform: rotate(360deg); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Skeleton loader ── */
+.skeleton {
+  background: linear-gradient(90deg, #eef0f8 25%, #e4e8f5 50%, #eef0f8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+  border-radius: 6px;
+  display: block;
+}
+.skeleton-h1 { height: 28px; width: 55%; }
+.skeleton-h2 { height: 20px; width: 70%; }
+.skeleton-text { height: 13px; width: 90%; }
+.skeleton-text-sm { height: 11px; width: 65%; }
+.skeleton-card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* ── Stagger entrance ── */
+.stagger > * { animation: fadeInUp .38s ease both; }
+.stagger > *:nth-child(1)  { animation-delay: .04s; }
+.stagger > *:nth-child(2)  { animation-delay: .09s; }
+.stagger > *:nth-child(3)  { animation-delay: .14s; }
+.stagger > *:nth-child(4)  { animation-delay: .19s; }
+.stagger > *:nth-child(5)  { animation-delay: .24s; }
+.stagger > *:nth-child(6)  { animation-delay: .28s; }
+.stagger > *:nth-child(7)  { animation-delay: .32s; }
+.stagger > *:nth-child(8)  { animation-delay: .36s; }
+.stagger > *:nth-child(9)  { animation-delay: .40s; }
+.stagger > *:nth-child(10) { animation-delay: .44s; }
+.stagger > *:nth-child(11) { animation-delay: .48s; }
+.stagger > *:nth-child(12) { animation-delay: .52s; }
+
+/* ── Input group (prefix/suffix) ── */
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+.input-prefix, .input-suffix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 .8rem;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+.input-prefix {
+  border-right: none;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+.input-suffix {
+  border-left: none;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.input-group .form-control {
+  border-radius: 0;
+  flex: 1;
+}
+.input-group:focus-within .input-prefix,
+.input-group:focus-within .input-suffix {
+  border-color: var(--primary);
+}
