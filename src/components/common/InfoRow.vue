@@ -11,8 +11,17 @@ defineProps({ label: String, value: [String, Number, Boolean], missingLabel: Str
 </script>
 
 <style scoped>
-.info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; padding: .25rem 0; border-bottom: 1px solid #f8fafc; font-size: .85rem; }
-.info-label { color: var(--text-muted); flex-shrink: 0; }
-.info-value { text-align: right; }
-.info-missing { color: #cbd5e1; font-style: italic; text-align: right; }
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: .3rem 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: .83rem;
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { color: var(--text-muted); flex-shrink: 0; font-weight: 500; }
+.info-value { text-align: right; color: var(--text); font-weight: 500; }
+.info-missing { color: var(--border); font-style: italic; text-align: right; }
 </style>
